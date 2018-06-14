@@ -45,6 +45,7 @@
 /* USER CODE BEGIN Includes */
 #include "esp8266.h"
 #include "esp8266_ll.h"
+#include "dweet.h"
 #include <string.h>
 /* USER CODE END Includes */
 
@@ -111,7 +112,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   ESP8266_JoinAccessPoint(SSID, PASSWORD);
-  while(ESP8266_Conect_To_Server(0,"172.31.141.132","3003",60) != ESP8266_RESPONSE_FINISHED);
   memset(message, 0, DEFAULT_BUFFER_SIZE);
   memset(message_parser, 0, DEFAULT_BUFFER_SIZE);
   while (1)
@@ -120,15 +120,7 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  ESP8266_Send("Hello world!");
-	  Read_Data(message);
-	  ESP8266_Send(message);
-	  //ESP8266_Paser_Received_Data(message,message_parser);
- 	  HAL_Delay(1000);
-	  memset(message, 0, DEFAULT_BUFFER_SIZE);
-	  memset(message_parser, 0, DEFAULT_BUFFER_SIZE);
-
-
+	  dweetsend("caio1234","{\"cpu\":\"1\"}");
   }
   /* USER CODE END 3 */
 
