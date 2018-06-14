@@ -5,6 +5,7 @@
  *      Author: tpv
  */
 #include <stdbool.h>
+#include <stdint.h>
 #include "esp8266_ll.h"
 #include "stm32f1xx_hal.h"
 #include "usart.h"
@@ -32,6 +33,6 @@ void _esp8266_print(char *ptr){
 	}
 }
 
-void _esp8266_putch(char message){
+void _esp8266_putch(uint8_t message){
 	HAL_UART_Transmit(&huart2,&message,sizeof(char),100);
 }

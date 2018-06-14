@@ -25,10 +25,6 @@ struct wifi_state {
 #define ACCESSPOINT			2
 #define BOTH_STATION_AND_ACCESPOINT	3
 
-/* Select Demo */
-#define RECEIVE_DEMO			/* Define RECEIVE demo */
-//#define SEND_DEMO			/* Define SEND demo */
-
 #define SSID				"TPV-RD"
 #define PASSWORD			"Romaag08$"
 

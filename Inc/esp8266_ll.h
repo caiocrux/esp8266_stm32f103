@@ -11,6 +11,6 @@
 void esp8266_set_power_down_hw(bool on_off);
 void esp8266_reset_hw(void);
 void _esp8266_print(char *ptr);
-void _esp8266_putch(char message);
+void _esp8266_putch(uint8_t message);
 
 #endif /* ESP8266_LL_H_ */
