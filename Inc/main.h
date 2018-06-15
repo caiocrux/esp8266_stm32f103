@@ -49,10 +49,14 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define LED_Pin GPIO_PIN_1
+#define LED_GPIO_Port GPIOA
 #define WIFI_TX_Pin GPIO_PIN_2
 #define WIFI_TX_GPIO_Port GPIOA
 #define WIFI_RX_Pin GPIO_PIN_3
 #define WIFI_RX_GPIO_Port GPIOA
+#define LDR_Pin GPIO_PIN_4
+#define LDR_GPIO_Port GPIOA
 #define WIFI_CH_PD_Pin GPIO_PIN_13
 #define WIFI_CH_PD_GPIO_Port GPIOB
 #define WIFI_RST_Pin GPIO_PIN_14

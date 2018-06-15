@@ -143,7 +143,7 @@ bool ESP8266_Begin()
 
 bool ESP8266_Close()
 {
-	return SendATandExpectResponse("AT+CIPCLOSE=1", "\r\nOK\r\n");
+	return SendATandExpectResponse("AT+CIPCLOSE","\r\nOK\r\n");
 }
 
 bool ESP8266_WIFIMode(uint8_t _mode)

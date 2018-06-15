@@ -39,6 +39,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
+#include "adc.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -98,29 +99,45 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   esp8266_reset_hw();
   while(!ESP8266_Begin());
   ESP8266_WIFIMode(STATION);
   ESP8266_ConnectionMode(SINGLE);			/* 0 = Single; 1 = Multi */
-  ESP8266_ApplicationMode(NORMAL);		/* 0 = Normal Mode; 1 = Transperant Mode */
-  char message[DEFAULT_BUFFER_SIZE];
-  char message_parser[DEFAULT_BUFFER_SIZE];
+  ESP8266_ApplicationMode(NORMAL);			/* 0 = Normal Mode; 1 = Transperant Mode */
+  uint32_t ldr_value =0;
+  bool LED = false;
+  HAL_ADC_Start (&hadc1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
   ESP8266_JoinAccessPoint(SSID, PASSWORD);
-  memset(message, 0, DEFAULT_BUFFER_SIZE);
-  memset(message_parser, 0, DEFAULT_BUFFER_SIZE);
+  char lrdvalue[300];
   while (1)
   {
 
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
-	  dweetsend("caio1234","{\"cpu\":\"1\"}");
+	  memset(lrdvalue, 0, 300);
+      HAL_ADC_PollForConversion (&hadc1, 1000);
+      ldr_value = HAL_ADC_GetValue (&hadc1);
+      if ( ldr_value < 1500){
+    	  HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_SET);
+
+      }
+      else {
+    	  HAL_GPIO_WritePin(LED_GPIO_Port,LED_Pin,GPIO_PIN_RESET);
+      }
+      LED = HAL_GPIO_ReadPin(LED_GPIO_Port,LED_Pin);
+      sprintf(lrdvalue, "{\"ldr\":\"%lu\",\"led\":\"%d\"}",ldr_value,LED);
+	  dweetsend("caio1234",lrdvalue);
+	  //dweetget("caio1234");
+	  //HAL_Delay(100);
+
   }
   /* USER CODE END 3 */
 
@@ -135,6 +152,7 @@ void SystemClock_Config(void)
 
   RCC_OscInitTypeDef RCC_OscInitStruct;
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_PeriphCLKInitTypeDef PeriphClkInit;
 
     /**Initializes the CPU, AHB and APB busses clocks 
     */
@@ -157,6 +175,13 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     _Error_Handler(__FILE__, __LINE__);
   }

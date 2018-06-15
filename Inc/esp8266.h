@@ -28,7 +28,7 @@ struct wifi_state {
 #define SSID				"TPV-RD"
 #define PASSWORD			"Romaag08$"
 
-#define DEFAULT_BUFFER_SIZE		160
+#define DEFAULT_BUFFER_SIZE		480
 #define DEFAULT_TIMEOUT			5000
 
 enum ESP8266_RESPONSE_STATUS{
